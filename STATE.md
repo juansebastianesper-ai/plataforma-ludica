@@ -4,17 +4,15 @@ Estado del proyecto. Léalo al iniciar cada sesión de trabajo y actualícelo al
 
 ## Estado actual
 
-Plantilla recibida localmente; los datos del aprendiz, curso y mecánica ya están registrados.
-Las pruebas locales pasan. El directorio aún no tiene metadatos de Git, y el despliegue en Render
-está pendiente.
+El proyecto está publicado en GitHub y desplegado en Render. La aplicación responde correctamente
+en https://plataforma-ludica.onrender.com. Las pruebas locales pasan.
 
 ## Decisiones
 
 | Fecha | Decisión | Motivo |
 | --- | --- | --- |
-|  |  |  |
+| 2026-11-05 | Desplegar la aplicación con el Blueprint de Render | Usar render.yaml para crear el servicio web gratuito |
 
 ## Siguiente paso
 
-Crear el repositorio público desde la plantilla del instructor, clonarlo y completar las evidencias
-de CI, despliegue en Render y PWA.
+Abrir la aplicación en el celular e instalarla como PWA; guardar la evidencia de la instalación.

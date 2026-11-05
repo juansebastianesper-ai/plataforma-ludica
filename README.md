@@ -4,7 +4,7 @@ Prototipo de una plataforma web lúdica de cursos para niños, desarrollado con 
 
 - **Aprendiz:** Juan Sebastian Esper Martinez
 - **Curso y mecánica:** Lógica y programación — Niveles
-- **Aplicación publicada:** Pendiente de despliegue en Render.
+- **Aplicación publicada:** https://plataforma-ludica.onrender.com
 
 ## Ejecutar en su equipo
 
