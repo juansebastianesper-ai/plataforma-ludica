@@ -13,6 +13,6 @@ Me comprometo a cumplir las siguientes reglas durante el desarrollo de este proy
 | --- | --- |
 | (complete) | (complete) |
 
-**Nombre:** (complete)
+**Nombre:** Juan Sebastian Esper Martinez
 
-**Fecha:** (complete)
+**Fecha:** 2026-11-23
