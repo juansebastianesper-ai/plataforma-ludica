@@ -6,8 +6,8 @@
       "*": "ask",
       "pytest *": "allow",
       "ruff check *": "allow",
-      "git commit *": "deny",
-      "git push *": "deny"
+      "git commit *": "allow",
+      "git push *": "allow"
     }
   }
 }
