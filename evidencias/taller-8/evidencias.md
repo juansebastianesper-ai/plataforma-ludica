@@ -39,15 +39,25 @@ Tablas creadas: `actividad`, `clase`, `intento`, `nino`, `pregunta`.
 
 ## 4. Pruebas en rojo
 
-Pendiente: captura de pytest con 11 pruebas de `test_actividades.py` en rojo y 1 en verde, anterior a la API.
+Pendiente de captura del desarrollador: ejecutar `python -m pytest -v` **antes de implementar la API** y capturar el resultado completo.
+
+Resultado real obtenido en este momento: `11 failed, 8 passed` (19 pruebas). En `test_actividades.py`: 11 FAILED y 1 PASSED (`test_actividad_inexistente_responde_404`). Las 7 pruebas de `test_inicio.py` siguen en verde. Primer error representativo: `assert 404 == 200` en `test_lista_vacia_cuando_no_hay_actividades`, porque la ruta `/api/actividades` todavía no existe.
 
 ## 5. API de actividades
 
-Pendiente: plan del agente con rutas completas y captura de pytest y Ruff en verde.
+Pendiente de captura del desarrollador: mensaje del agente con el plan que incluya las rutas completas de los archivos, y terminal con `python -m pytest -v` y `ruff check .` en verde.
+
+Rutas del plan aprobado: `app/esquemas.py`, `app/servicios/actividades.py`, `app/rutas/actividades.py` y `app/main.py`.
+
+Resultado real: **19 pruebas pasadas** (12 de `test_actividades.py` y 7 de `test_inicio.py`) y `All checks passed!` de Ruff, al primer intento de corrección.
 
 ## 6. Prueba en /docs
 
-Pendiente: captura de Swagger con POST `/api/actividades` y respuesta 201 de una actividad de Lógica y programación.
+Pendiente de captura del desarrollador: sección **Actividades** en `/docs` con cinco operaciones y captura de la respuesta **201** de `POST /api/actividades` para una actividad del curso propio.
+
+Prueba manual local realizada con la actividad «Secuencias con el robot» (Lógica y programación): `POST` → **201**, id de actividad 1, ids de preguntas 1 a 5; `GET` → **200** con la actividad en la lista; un cuerpo con la respuesta correcta fuera de las opciones → **422**. El tag `Actividades` aparece en las cinco operaciones de `openapi.json`.
+
+Incidencia resuelta: había procesos uvicorn huérfanos de sesiones anteriores en el puerto 8000 que servían una versión antigua (el primer POST devolvió 404). Se detuvieron todos los procesos `uvicorn app.main:app` y sus procesos hijos, se arrancó uno limpio y la prueba pasó. El servidor quedó detenido al terminar.
 
 ## 7. Contenido inicial
 

@@ -8,7 +8,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app import proyecto
 from app.db import crear_tablas
-from app.rutas import api, paginas
+from app.rutas import actividades, api, paginas
 
 CARPETA_APP = Path(__file__).resolve().parent
 
@@ -30,3 +30,4 @@ app = FastAPI(
 app.mount("/static", StaticFiles(directory=CARPETA_APP / "static"), name="static")
 app.include_router(paginas.router)
 app.include_router(api.router)
+app.include_router(actividades.router)

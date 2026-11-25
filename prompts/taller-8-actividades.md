@@ -97,3 +97,48 @@ python -m pytest -v pasa todas las pruebas existentes, ruff check . no reporta e
 ```
 
 **Resultado:** se crearon las cinco tablas con `opciones JSON`, `codigo` único de seis caracteres y las cuatro claves foráneas. `crear_tablas()` importa los modelos antes de `create_all`, por lo que aparecen las cinco sentencias `CREATE TABLE`. Se corrigió el orden de importación de `sqlalchemy` para Ruff (I001). El argumento `echo=True` se usó solo para verificar el SQL y se retiró después.
+
+## API de actividades
+
+**Objetivo:** implementar el CRUD de actividades hasta que pasen las pruebas de aceptación.
+
+**Herramienta y modelo:** OpenCode con el modelo Big Pickle (`opencode/big-pickle`).
+
+**Prompt:**
+
+```
+## Rol
+Actúa como desarrollador backend con experiencia en FastAPI, Pydantic y SQLModel.
+
+## Objetivo
+Implementar el CRUD completo de actividades en app/esquemas.py, app/servicios/actividades.py, app/rutas/actividades.py y app/main.py, hasta que pasen las pruebas de aceptación.
+
+## Contexto
+Lee AGENTS.md, specs/spec.md, app/db.py, app/modelos/__init__.py, app/main.py y tests/aceptacion/test_actividades.py. El contrato exige:
+- GET /api/actividades devuelve la lista ordenada por orden, con sus preguntas.
+- POST /api/actividades responde 201 con el id de la actividad y de cada pregunta.
+- GET, PUT y DELETE /api/actividades/{actividad_id} responden 200, 200 y 204; 404 si no existe.
+- PUT reemplaza las preguntas anteriores; DELETE elimina actividad y preguntas.
+- Validaciones: título no vacío, mínimo 5 preguntas, de 3 a 4 opciones por pregunta y respuesta correcta incluida en las opciones. Cualquier fallo responde 422.
+- La ruta se registra con el tag Actividades.
+
+## Restricciones
+- La lógica de negocio va en app/servicios/actividades.py; las rutas solo reciben la petición y llaman al servicio.
+- El cuerpo se valida con esquemas de Pydantic, no con modelos de tabla.
+- La sesión se declara con Annotated[Session, Depends(obtener_sesion)].
+- No modifiques ningún archivo de tests ni agregues dependencias.
+- No dejes servidores en ejecución al terminar.
+
+## Formato de salida
+Antes de escribir código, muestra el plan con las rutas completas de los archivos y espera mi aprobación.
+
+## Ejemplo
+@router.post("/api/actividades", response_model=ActividadRespuesta, status_code=201)
+def crear_actividad(datos: ActividadCrear, sesion: Annotated[Session, Depends(obtener_sesion)]):
+    return servicio_actividades.crear_actividad(sesion, datos)
+
+## Criterio de éxito
+python -m pytest -v pasa las 19 pruebas y ruff check . responde All checks passed!. Si después de 3 intentos no se cumple, detente y explica el problema.
+```
+
+**Resultado:** se implementó el CRUD con validaciones Pydantic y servicio separado. Todas las pruebas pasaron al primer intento, sin correcciones de código. Hubo un problema ajeno al código: varios servidores uvicorn huérfanos de sesiones anteriores atendían el puerto 8000 con una versión antigua, por lo que el primer POST manual devolvió 404. Se detuvieron esos procesos, se inició un servidor limpio y el POST devolvió 201 con los ids esperados; además, un cuerpo inválido devolvió 422. Lección para AGENTS.md: detener y verificar los procesos uvicorn antes de una prueba manual en el puerto 8000.
