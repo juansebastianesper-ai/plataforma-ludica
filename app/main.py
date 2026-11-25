@@ -5,9 +5,11 @@ from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
+from sqlmodel import Session
 
 from app import proyecto
-from app.db import crear_tablas
+from app.datos_iniciales import cargar_datos_iniciales
+from app.db import crear_tablas, motor
 from app.rutas import actividades, api, paginas
 
 CARPETA_APP = Path(__file__).resolve().parent
@@ -17,6 +19,8 @@ CARPETA_APP = Path(__file__).resolve().parent
 async def lifespan(aplicacion: FastAPI):
     """Prepara la base de datos al iniciar la aplicación."""
     crear_tablas()
+    with Session(motor) as sesion:
+        cargar_datos_iniciales(sesion)
     yield
 
 

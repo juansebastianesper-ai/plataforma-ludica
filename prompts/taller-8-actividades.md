@@ -142,3 +142,40 @@ python -m pytest -v pasa las 19 pruebas y ruff check . responde All checks passe
 ```
 
 **Resultado:** se implementó el CRUD con validaciones Pydantic y servicio separado. Todas las pruebas pasaron al primer intento, sin correcciones de código. Hubo un problema ajeno al código: varios servidores uvicorn huérfanos de sesiones anteriores atendían el puerto 8000 con una versión antigua, por lo que el primer POST manual devolvió 404. Se detuvieron esos procesos, se inició un servidor limpio y el POST devolvió 201 con los ids esperados; además, un cuerpo inválido devolvió 422. Lección para AGENTS.md: detener y verificar los procesos uvicorn antes de una prueba manual en el puerto 8000.
+
+## Contenido inicial
+
+**Objetivo:** cargar 3 actividades de 5 preguntas del curso propio.
+
+**Herramienta y modelo:** OpenCode con el modelo Big Pickle (`opencode/big-pickle`).
+
+**Prompt:**
+
+```
+## Rol
+Actúa como desarrollador backend y diseñador de contenidos educativos para niños de 6 a 10 años.
+
+## Objetivo
+Crear en app/datos_iniciales.py la función cargar_datos_iniciales(sesion), que cargue el contenido inicial de Lógica y programación, y llamarla en el ciclo de vida de app/main.py después de crear_tablas().
+
+## Contexto
+Lee AGENTS.md, specs/encargo.md, specs/respuestas-cliente.md, app/modelos/__init__.py, app/main.py y tests/aceptacion/test_datos_iniciales.py.
+
+## Restricciones
+- Carga una clase con un código de 6 caracteres, 3 niños con alias de animales y avatares de la lista de specs/respuestas-cliente.md, y 3 actividades de 5 preguntas cada una, con su descripción.
+- Las preguntas siguen los temas y ejemplos de specs/encargo.md: secuencias, patrones y algoritmos sencillos, sin escribir código. Tienen 3 o 4 opciones y una sola respuesta correcta.
+- Solo carga los datos si la base de datos no tiene ninguna clase, para que al ejecutarla dos veces no se duplique nada.
+- Todos los datos son ficticios y los alias no son nombres de personas.
+- No modifiques ningún archivo de la carpeta tests.
+
+## Formato de salida
+Antes de escribir código, muestra los títulos de las 3 actividades y sus 15 preguntas con sus opciones y la respuesta correcta, y espera mi aprobación.
+
+## Ejemplo
+Actividad 1: «Secuencias para llegar a la meta». Pregunta: «¿Qué instrucción mueve al robot una casilla hacia delante?». Opciones: Avanzar, Girar, Repetir. Respuesta correcta: Avanzar.
+
+## Criterio de éxito
+python -m pytest -v pasa todas las pruebas, incluidas las de tests/aceptacion/test_datos_iniciales.py, y ruff check . no reporta errores. Si después de 3 intentos no se cumple, detente y explica el problema.
+```
+
+**Resultado:** se propusieron las actividades «Secuencias para llegar a la meta», «Patrones que se repiten» y «Algoritmos sencillos paso a paso», con 15 preguntas de 3 opciones cada una. El desarrollador revisó una por una las respuestas correctas y el lenguaje, y aprobó el contenido sin correcciones. La primera ejecución de Ruff detectó 9 líneas largas en `app/datos_iniciales.py`; se partieron los textos en cadenas adyacentes y la segunda ejecución pasó. Las 21 pruebas pasaron. La verificación local mostró 3 actividades y 15 preguntas tras borrar la base y también después de reiniciar el servidor.

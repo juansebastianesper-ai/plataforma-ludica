@@ -61,7 +61,33 @@ Incidencia resuelta: había procesos uvicorn huérfanos de sesiones anteriores e
 
 ## 7. Contenido inicial
 
-Pendiente: tabla de revisión de las 15 preguntas, pytest en verde y `/api/actividades` en local con 3 actividades.
+Copiado `tests/aceptacion/test_datos_iniciales.py` sin modificarlo (hash idéntico al del paquete). Antes de crear `app/datos_iniciales.py`, `python -m pytest -v` muestra el error de recolección esperado: `ModuleNotFoundError: No module named 'app.datos_iniciales'`. Pendiente de captura del desarrollador de ese momento.
+
+El desarrollador revisó sin IA las 15 preguntas propuestas y respondió «Aprobado, procede». Tabla de revisión:
+
+| N.º Pregunta | ¿La respuesta correcta lo es? | ¿El lenguaje es adecuado para niños de 6 a 10 años? | Corrección aplicada |
+| --- | --- | --- | --- |
+| 1 | Sí | Sí | Ninguna |
+| 2 | Sí | Sí | Ninguna |
+| 3 | Sí | Sí | Ninguna |
+| 4 | Sí | Sí | Ninguna |
+| 5 | Sí | Sí | Ninguna |
+| 6 | Sí | Sí | Ninguna |
+| 7 | Sí | Sí | Ninguna |
+| 8 | Sí | Sí | Ninguna |
+| 9 | Sí | Sí | Ninguna |
+| 10 | Sí | Sí | Ninguna |
+| 11 | Sí | Sí | Ninguna |
+| 12 | Sí | Sí | Ninguna |
+| 13 | Sí | Sí | Ninguna |
+| 14 | Sí | Sí | Ninguna |
+| 15 | Sí | Sí | Ninguna |
+
+Verificación real: `python -m pytest -v` → **21 pruebas pasadas** (12 de `test_actividades.py`, 2 de `test_datos_iniciales.py` y 7 de `test_inicio.py`); `ruff check .` → `All checks passed!`. La primera ejecución de Ruff reportó 9 líneas largas (E501) en `app/datos_iniciales.py`; se partieron los enunciados y las descripciones en cadenas adyacentes.
+
+Pendiente de captura del desarrollador: pytest en verde y `/api/actividades` con formato JSON en Chrome o Edge.
+
+Comprobación local de idempotencia: se borró `plataforma.db`, se inició el servidor y `/api/actividades` devolvió 3 actividades con 5 preguntas cada una (15 en total, todas con 3 opciones); se detuvo y reinició el servidor y la respuesta siguió siendo exactamente 3 actividades y 15 preguntas. El servidor quedó detenido.
 
 ## 8. Lecciones aprendidas
 
